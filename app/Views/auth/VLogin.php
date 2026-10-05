@@ -74,7 +74,8 @@
           <a class="lupa" href="#">Lupa kata sandi?</a>
         </div>
 
-        <button type="submit" class="btn pri blok" id="tombolMasuk">Masuk</button>
+        <button type="submit" class="btn pri blok" id="tombolMasuk">Masuk
+        <button type="submit" class="btn sec blok" id="tombolTamu">Masuk sebagai Tamu</button>
       </form>
 
       <p class="pindah">Belum punya akun? <a href="<?=site_url('daftar')?>">Buat akun</a></p>

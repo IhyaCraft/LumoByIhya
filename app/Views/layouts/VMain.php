@@ -27,7 +27,7 @@ $menu = [
   </div>
   <div class="rt">
     <a class="btn sec" href="<?=site_url('masuk')?>">Masuk</a>
-    <a class="btn pri" href="<?=site_url('daftar')?>">Mulai Sekarang</a>
+    <a class="btn pri" href="<?=site_url('masuk')?>">Mulai Sekarang</a>
     <button class="mb" id="mb" aria-label="Buka menu" aria-expanded="false">☰</button>
   </div>
 </div>

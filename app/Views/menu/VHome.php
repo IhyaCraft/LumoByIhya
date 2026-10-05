@@ -9,7 +9,7 @@
     <h1>Belajar jadi lebih seru!</h1>
     <p class="lead">Lumo membantu anak belajar, bermain, dan menemukan hal-hal baru dengan cara yang menyenangkan.</p>
     <div class="cta">
-      <a class="btn pri" href="<?=site_url('daftar')?>">Mulai Sekarang</a>
+      <a class="btn pri" href="<?=site_url('masuk')?>">Mulai Sekarang</a>
       <a class="btn sec" href="#pengalaman">Kenalan dengan Lumo</a>
     </div>
   </div>
