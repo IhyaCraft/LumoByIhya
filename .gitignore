@@ -1,0 +1,10 @@
+/writable/*
+!/writable/.gitkeep
+
+/node_modules/
+/vendor/
+
+.env
+.env.*
+
+!.env.example
