@@ -88,7 +88,24 @@
   </main>
 
 </div>
+<div class="loading-daftar" id="loadingDaftar" aria-hidden="true">
+    <div class="loading-card" role="status" aria-live="polite">
+        <div class="loading-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
 
-<script src="<?= base_url('assets/js/login.js') ?>"></script>
+        <h2>Sedang mengirimkan OTP</h2>
+        <p>Tunggu sebentar ya, kode verifikasi sedang dikirim ke email kamu.</p>
+
+        <div class="loading-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</div>
+<script src="<?= base_url('assets/js/daftar.js') ?>"></script>
 </body>
 </html>
