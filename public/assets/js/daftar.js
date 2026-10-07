@@ -1,3 +1,4 @@
+
 (function () {
     var form = document.getElementById('formDaftar');
     var nama = document.getElementById('nama');
@@ -7,30 +8,29 @@
     var tombol = document.getElementById('tombolDaftar');
     var loadingDaftar = document.getElementById('loadingDaftar');
     var maskot = document.querySelector('.mk');
-    var kembali = document.querySelector('.kembali');
 
     if (!form || !nama || !email || !sandi || !tombol) {
         return;
     }
 
     function tampilError(input, pesan) {
-        var el = document.getElementById('err-' + input.id);
+    var errorId = input.id === 'sandi' ? 'err-password' : 'err-' + input.id;
+    var el = document.getElementById(errorId);
 
-        if (!el) {
-            return;
-        }
-
-        if (pesan) {
-            input.setAttribute('aria-invalid', 'true');
-            el.textContent = '⚠ ' + pesan;
-            el.classList.remove('muncul');
-            void el.offsetWidth;
-            el.classList.add('muncul');
-        } else {
-            input.removeAttribute('aria-invalid');
-            el.textContent = '';
-        }
+    if (!el) {
+        return;
     }
+
+    if (pesan) {
+        input.setAttribute('aria-invalid', 'true');
+        el.textContent = '⚠ ' + pesan;
+        el.classList.add('muncul');
+    } else {
+        input.removeAttribute('aria-invalid');
+        el.textContent = '';
+        el.classList.remove('muncul');
+    }
+}
 
     function cekNama() {
         var nilai = nama.value.trim();
@@ -61,11 +61,13 @@
     }
 
     function cekSandi() {
-        if (!sandi.value) {
+        var nilai = sandi.value;
+
+        if (!nilai) {
             return 'Kata sandi wajib diisi.';
         }
 
-        if (sandi.value.length < 8) {
+        if (nilai.length < 8) {
             return 'Kata sandi minimal 8 karakter.';
         }
 
@@ -86,45 +88,32 @@
         });
     }
 
-    if (kembali && maskot) {
-        kembali.addEventListener('click', function () {
-            maskot.classList.add('pamit');
-        });
-    }
-
     nama.addEventListener('blur', function () {
-        if (nama.value) {
-            tampilError(nama, cekNama());
-        }
+        tampilError(nama, cekNama());
     });
 
     email.addEventListener('blur', function () {
-        if (email.value) {
+        tampilError(email, cekEmail());
+    });
+
+    sandi.addEventListener('blur', function () {
+        tampilError(sandi, cekSandi());
+    });
+
+nama.addEventListener('input', function () {
+    if (nama.hasAttribute('aria-invalid')) {
+        tampilError(nama, cekNama());
+    }
+});
+    email.addEventListener('input', function () {
+        if (email.hasAttribute('aria-invalid')) {
             tampilError(email, cekEmail());
         }
     });
 
-    sandi.addEventListener('blur', function () {
-        if (sandi.value) {
-            tampilError(sandi, cekSandi());
-        }
-    });
-
-    nama.addEventListener('input', function () {
-        if (nama.hasAttribute('aria-invalid') && !cekNama()) {
-            tampilError(nama, '');
-        }
-    });
-
-    email.addEventListener('input', function () {
-        if (email.hasAttribute('aria-invalid') && !cekEmail()) {
-            tampilError(email, '');
-        }
-    });
-
     sandi.addEventListener('input', function () {
-        if (sandi.hasAttribute('aria-invalid') && !cekSandi()) {
-            tampilError(sandi, '');
+        if (sandi.hasAttribute('aria-invalid')) {
+            tampilError(sandi, cekSandi());
         }
     });
 
@@ -151,9 +140,9 @@
             return;
         }
 
-        tombol.classList.add('memuat');
-        tombol.textContent = 'Mendaftar';
+        tombol.textContent = 'Memproses...';
         tombol.disabled = true;
+        tombol.classList.add('memuat');
 
         if (loadingDaftar) {
             loadingDaftar.classList.add('aktif');

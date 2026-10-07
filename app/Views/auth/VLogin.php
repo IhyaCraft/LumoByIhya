@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -12,76 +13,115 @@
 
 <div class="login">
 
-  <aside class="sisi">
-    <a class="logo" href="<?= base_url('/') ?>"><i>💡</i>Lumo</a>
+    <aside class="sisi">
+        <a class="logo" href="<?= base_url('/') ?>"><i>💡</i>Lumo</a>
 
-    <div class="panggung">
-      <?= view('partials/VMaskot', ['kelas' => 'mk', 'lengkap' => true]) ?>
-      <div class="fc f1">⭐ 320 Bintang</div>
-      <div class="fc f2">🌱 Sains &amp; Alam</div>
-      <div class="fc f3">🏆 5 Pencapaian</div>
-    </div>
-
-    <div class="sapa">
-      <h2>Belajar. Jelajahi. Tumbuh.</h2>
-      <p>Masuk dan lihat sudah sejauh mana petualangan belajar anakmu.</p>
-    </div>
-  </aside>
-
-  <main class="area">
-    <div class="kotak">
-      <a class="kembali" href="<?= base_url('/') ?>">← Kembali ke beranda</a>
-
-      <h1>Selamat datang kembali!</h1>
-      <p class="sub">Masuk untuk melihat perkembangan belajar anak.</p>
-
-      <form id="formMasuk" novalidate>
-        <div class="bidang">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="nama@email.com"
-            autocomplete="email"
-            inputmode="email"
-            aria-describedby="err-email"
-          >
-          <p class="err" id="err-email" role="alert"></p>
+        <div class="panggung">
+            <?= view('partials/VMaskot', ['kelas' => 'mk', 'lengkap' => true]) ?>
+            <div class="fc f1">⭐ 320 Bintang</div>
+            <div class="fc f2">🌱 Sains &amp; Alam</div>
+            <div class="fc f3">🏆 5 Pencapaian</div>
         </div>
 
-        <div class="bidang">
-          <label for="sandi">Kata sandi</label>
-          <div class="sandi">
-            <input
-              type="password"
-              id="sandi"
-              name="sandi"
-              placeholder="Minimal 8 karakter"
-              autocomplete="current-password"
-              aria-describedby="err-sandi"
-            >
-            <button type="button" class="lihat" id="lihatSandi" aria-controls="sandi" aria-pressed="false">Lihat</button>
-          </div>
-          <p class="err" id="err-sandi" role="alert"></p>
+        <div class="sapa">
+            <h2>Belajar. Jelajahi. Tumbuh.</h2>
+            <p>Masuk dan lihat sudah sejauh mana petualangan belajar anakmu.</p>
         </div>
+    </aside>
 
-        <div class="baris">
-          <label class="centang">
-            <input type="checkbox" name="ingat" value="1">
-            <span>Ingat saya</span>
-          </label>
-          <a class="lupa" href="#">Lupa kata sandi?</a>
+    <main class="area">
+        <div class="kotak">
+
+            <a class="kembali" href="<?= base_url('/') ?>">← Kembali ke beranda</a>
+
+            <h1>Selamat datang kembali!</h1>
+            <p class="sub">Masuk untuk melihat perkembangan belajar anak.</p>
+
+            <?php if (session()->getFlashdata('error')): ?>
+                <div class="pesan error" role="alert">
+                    <?= esc(session()->getFlashdata('error')) ?>
+                </div>
+            <?php endif; ?>
+
+            <form id="formMasuk" action="<?= site_url('masuk') ?>" method="post" novalidate>
+                <?= csrf_field() ?>
+
+                <div class="bidang">
+                    <label for="email">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="nama@email.com"
+                        autocomplete="email"
+                        inputmode="email"
+                        aria-describedby="err-email"
+                    >
+                    <p class="err" id="err-email" role="alert"></p>
+                </div>
+
+                <div class="bidang">
+                    <label for="password">Kata sandi</label>
+
+                    <div class="sandi">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Minimal 8 karakter"
+                            autocomplete="current-password"
+                            aria-describedby="err-password"
+                        >
+
+                        <button
+                            type="button"
+                            class="lihat"
+                            id="lihatSandi"
+                            aria-controls="password"
+                            aria-pressed="false"
+                        >
+                            Lihat
+                        </button>
+                    </div>
+
+                    <p class="err" id="err-password" role="alert"></p>
+                </div>
+
+                <div class="baris">
+                    <label class="centang">
+                        <input type="checkbox" name="ingat" value="1">
+                        <span>Ingat saya</span>
+                    </label>
+
+                    <a class="lupa" href="#">Lupa kata sandi?</a>
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn pri blok"
+                    id="tombolMasuk"
+                >
+                    Masuk
+                </button>
+
+                <button
+                    type="button"
+                    class="btn sec blok"
+                    id="tombolTamu"
+                >
+                    Masuk sebagai Tamu
+                </button>
+            </form>
+
+            <p class="pindah">
+                Belum punya akun?
+                <a href="<?= site_url('daftar') ?>">Buat akun</a>
+            </p>
+
+            <p class="hak">© <?= date('Y') ?> Lumo</p>
+
         </div>
-
-        <button type="submit" class="btn pri blok" id="tombolMasuk">Masuk
-        <button type="submit" class="btn sec blok" id="tombolTamu">Masuk sebagai Tamu</button>
-      </form>
-
-      <p class="pindah">Belum punya akun? <a href="<?=site_url('daftar')?>">Buat akun</a></p>
-      <p class="hak">© <?= date('Y') ?> Lumo</p>
-    </div>
-  </main>
+    </main>
 
 </div>
 

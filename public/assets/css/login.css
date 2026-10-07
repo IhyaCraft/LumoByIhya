@@ -344,3 +344,14 @@
 .btn.blok + .btn.blok {
     margin-top: 12px;
 }
+.pesan {
+    margin-bottom: 18px;
+    padding: 13px 15px;
+    border-radius: 14px;
+    background: #fff0f0;
+    color: #c43d3d;
+    border: 1px solid #ffd4d4;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+}

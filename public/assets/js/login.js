@@ -1,90 +1,133 @@
+
 (function () {
-  var form = document.getElementById('formMasuk');
-  var email = document.getElementById('email');
-  var sandi = document.getElementById('sandi');
-  var lihat = document.getElementById('lihatSandi');
-  var tombol = document.getElementById('tombolMasuk');
-  var maskot = document.querySelector('.mk');
+    var form = document.getElementById('formMasuk');
+    var email = document.getElementById('email');
+    var password = document.getElementById('password');
+    var lihat = document.getElementById('lihatSandi');
+    var tombol = document.getElementById('tombolMasuk');
+    var maskot = document.querySelector('.mk');
 
-  function tampilError(input, pesan) {
-    var el = document.getElementById('err-' + input.id);
-    if (pesan) {
-      input.setAttribute('aria-invalid', 'true');
-      el.textContent = '⚠ ' + pesan;
-      el.classList.remove('muncul');
-      void el.offsetWidth;
-      el.classList.add('muncul');
-    } else {
-      input.removeAttribute('aria-invalid');
-      el.textContent = '';
-    }
-  }
-
-  function cekEmail() {
-    var nilai = email.value.trim();
-    if (!nilai) return 'Email wajib diisi.';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nilai)) return 'Format email belum benar. Contoh: nama@email.com';
-    return '';
-  }
-
-  function cekSandi() {
-    if (!sandi.value) return 'Kata sandi wajib diisi.';
-    if (sandi.value.length < 8) return 'Kata sandi minimal 8 karakter.';
-    return '';
-  }
-
-  lihat.addEventListener('click', function () {
-    var tampak = sandi.type === 'text';
-    sandi.type = tampak ? 'password' : 'text';
-    lihat.textContent = tampak ? 'Lihat' : 'Sembunyikan';
-    lihat.setAttribute('aria-pressed', String(!tampak));
-    if (maskot) maskot.classList.toggle('tutup', tampak && document.activeElement === sandi);
-  });
-
-  if (maskot) {
-    sandi.addEventListener('focus', function () {
-      if (sandi.type === 'password') maskot.classList.add('tutup');
-    });
-    sandi.addEventListener('blur', function () {
-      maskot.classList.remove('tutup');
-    });
-  }
-
-  email.addEventListener('blur', function () {
-    if (email.value) tampilError(email, cekEmail());
-  });
-
-  sandi.addEventListener('blur', function () {
-    if (sandi.value) tampilError(sandi, cekSandi());
-  });
-
-  email.addEventListener('input', function () {
-    if (email.hasAttribute('aria-invalid') && !cekEmail()) tampilError(email, '');
-  });
-
-  sandi.addEventListener('input', function () {
-    if (sandi.hasAttribute('aria-invalid') && !cekSandi()) tampilError(sandi, '');
-  });
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    var pesanEmail = cekEmail();
-    var pesanSandi = cekSandi();
-    tampilError(email, pesanEmail);
-    tampilError(sandi, pesanSandi);
-
-    if (pesanEmail || pesanSandi) {
-      (pesanEmail ? email : sandi).focus();
-      return;
+    if (!form || !email || !password || !tombol) {
+        return;
     }
 
-    tombol.classList.add('memuat');
-    tombol.textContent = 'Memproses';
+    function tampilError(input, pesan) {
+        var el = document.getElementById('err-' + input.id);
 
-    setTimeout(function () {
-      tombol.classList.remove('memuat');
-      tombol.textContent = 'Masuk';
-    }, 1200);
-  });
+        if (!el) {
+            return;
+        }
+
+        if (pesan) {
+            input.setAttribute('aria-invalid', 'true');
+            el.textContent = '⚠ ' + pesan;
+            el.classList.remove('muncul');
+            void el.offsetWidth;
+            el.classList.add('muncul');
+        } else {
+            input.removeAttribute('aria-invalid');
+            el.textContent = '';
+            el.classList.remove('muncul');
+        }
+    }
+
+    function cekEmail() {
+        var nilai = email.value.trim();
+
+        if (!nilai) {
+            return 'Email wajib diisi.';
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nilai)) {
+            return 'Format email belum benar. Contoh: nama@email.com';
+        }
+
+        return '';
+    }
+
+    function cekPassword() {
+        if (!password.value) {
+            return 'Kata sandi wajib diisi.';
+        }
+
+        if (password.value.length < 8) {
+            return 'Kata sandi minimal 8 karakter.';
+        }
+
+        return '';
+    }
+
+    if (lihat) {
+        lihat.addEventListener('click', function () {
+            var tampil = password.type === 'text';
+
+            password.type = tampil ? 'password' : 'text';
+            lihat.textContent = tampil ? 'Lihat' : 'Sembunyikan';
+            lihat.setAttribute('aria-pressed', String(!tampil));
+
+            if (maskot) {
+                maskot.classList.toggle('tutup', !tampil);
+            }
+        });
+    }
+
+    if (maskot) {
+        password.addEventListener('focus', function () {
+            if (password.type === 'password') {
+                maskot.classList.add('tutup');
+            }
+        });
+
+        password.addEventListener('blur', function () {
+            maskot.classList.remove('tutup');
+        });
+    }
+
+    email.addEventListener('blur', function () {
+        if (email.value.trim()) {
+            tampilError(email, cekEmail());
+        }
+    });
+
+    password.addEventListener('blur', function () {
+        if (password.value) {
+            tampilError(password, cekPassword());
+        }
+    });
+
+    email.addEventListener('input', function () {
+        if (email.hasAttribute('aria-invalid')) {
+            tampilError(email, cekEmail());
+        }
+    });
+
+    password.addEventListener('input', function () {
+        if (password.hasAttribute('aria-invalid')) {
+            tampilError(password, cekPassword());
+        }
+    });
+
+    form.addEventListener('submit', function (e) {
+        var pesanEmail = cekEmail();
+        var pesanPassword = cekPassword();
+
+        tampilError(email, pesanEmail);
+        tampilError(password, pesanPassword);
+
+        if (pesanEmail || pesanPassword) {
+            e.preventDefault();
+
+            if (pesanEmail) {
+                email.focus();
+            } else {
+                password.focus();
+            }
+
+            return;
+        }
+
+        tombol.classList.add('memuat');
+        tombol.textContent = 'Memproses...';
+        tombol.disabled = true;
+    });
 })();

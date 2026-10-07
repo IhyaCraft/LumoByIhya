@@ -6,7 +6,7 @@
 <title><?= esc($judul ?? 'Daftar — Lumo') ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?= base_url('assets/css/home.css') ?>">
-<link rel="stylesheet" href="<?= base_url('assets/css/login.css') ?>">
+<link rel="stylesheet" href="<?= base_url('assets/css/daftar.css') ?>">
 </head>
 <body>
 
@@ -34,6 +34,17 @@
 
       <h1>Selamat datang </h1>
       <p class="sub">Buat akun untuk mulai memantau dan mendampingi perkembangan belajar anak.</p>
+        <?php if ($error = session()->getFlashdata('error')): ?>
+    <div class="pesan-global error" role="alert">
+        <?= esc($error) ?>
+    </div>
+<?php endif; ?>
+
+<?php if ($errors = session()->getFlashdata('errors')): ?>
+    <div class="pesan-global error" role="alert">
+        <?= esc(implode(' ', $errors)) ?>
+    </div>
+<?php endif; ?>
 
       <form id="formDaftar" action="<?= site_url('daftar') ?>" method="post" novalidate>
     <?= csrf_field() ?>
@@ -66,20 +77,20 @@
     </div>
 
     <div class="bidang">
-        <label for="sandi">Kata sandi</label>
-        <div class="sandi">
-            <input
-                type="password"
-                id="sandi"
-                name="password"
-                placeholder="Minimal 8 karakter"
-                autocomplete="new-password"
-                aria-describedby="err-sandi"
-            >
-            <button type="button" class="lihat" id="lihatSandi" aria-controls="sandi" aria-pressed="false">Lihat</button>
-        </div>
-        <p class="err" id="err-sandi" role="alert"></p>
+    <label for="sandi">Kata sandi</label>
+    <div class="sandi">
+        <input
+            type="password"
+            id="sandi"
+            name="password"
+            placeholder="Minimal 8 karakter"
+            autocomplete="new-password"
+            aria-describedby="err-password"
+        >
+        <button type="button" class="lihat" id="lihatSandi" aria-controls="sandi" aria-pressed="false">Lihat</button>
     </div>
+    <p class="err" id="err-password" role="alert"></p>
+</div>
 
     <button type="submit" class="btn pri blok" id="tombolDaftar">Daftar</button>
 </form>
@@ -96,14 +107,8 @@
             <span></span>
         </div>
 
-        <h2>Sedang mengirimkan OTP</h2>
-        <p>Tunggu sebentar ya, kode verifikasi sedang dikirim ke email kamu.</p>
-
-        <div class="loading-dots">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+        <h2>Kode verifikasi sedang dikirim...</h2>
+        <p>Tunggu sebentar, ya!</p>
     </div>
 </div>
 <script src="<?= base_url('assets/js/daftar.js') ?>"></script>

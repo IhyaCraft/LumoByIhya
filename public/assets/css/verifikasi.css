@@ -1,0 +1,98 @@
+.btn-verifikasi,
+.btn-resend {
+    width: 100%;
+    min-height: 52px;
+    border: 0;
+    border-radius: 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+}
+
+.btn-verifikasi {
+    margin-top: 8px;
+    background: #6ee7ff;
+    color: #0a0f17;
+    box-shadow: 0 8px 24px rgba(110, 231, 255, .18);
+}
+
+.btn-verifikasi:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(110, 231, 255, .24);
+}
+
+.btn-verifikasi:active,
+.btn-resend:active {
+    transform: scale(.98);
+}
+
+.btn-resend {
+    margin-top: 12px;
+    background: #f1f4f7;
+    color: #596575;
+}
+
+.btn-resend:not(:disabled):hover {
+    background: #e7ebef;
+    color: #27313d;
+    transform: translateY(-1px);
+}
+
+.btn-resend:disabled {
+    cursor: not-allowed;
+    opacity: .65;
+}
+
+#hitungMundur {
+    margin-left: 4px;
+    font-weight: 900;
+}
+
+.pesan {
+    margin: 18px 0;
+    padding: 13px 15px;
+    border-radius: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.pesan.error {
+    background: #fff0f0;
+    color: #c43d3d;
+    border: 1px solid #ffd4d4;
+}
+
+.pesan.success {
+    background: #eefbf3;
+    color: #27824d;
+    border: 1px solid #ccefd9;
+}
+
+#otp {
+    text-align: center;
+    letter-spacing: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+}
+
+#otp::placeholder {
+    letter-spacing: 1px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+@media (max-width: 600px) {
+    .btn-verifikasi,
+    .btn-resend {
+        min-height: 50px;
+    }
+
+    #otp {
+        letter-spacing: 6px;
+        font-size: 22px;
+    }
+}
