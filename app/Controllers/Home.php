@@ -55,4 +55,42 @@ class Home extends BaseController
 
         return view('menu/VHome', $data);
     }
+    public function dashboard()
+{
+    if (! session()->get('isLoggedIn')) {
+        return redirect()->to(base_url('masuk'));
+    }
+
+    $nama = trim((string) session()->get('nama'));
+
+    $data = [
+        'judul'     => 'Beranda — Lumo',
+        'namaDepan' => $nama !== '' ? explode(' ', $nama)[0] : 'Teman',
+
+        'lanjut' => [
+            'warna'    => 'b',
+            'ikon'     => '➗',
+            'mapel'    => 'Matematika',
+            'materi'   => 'Penjumlahan & Pengurangan',
+            'progres'  => 65,
+            'tautan'   => '#',
+        ],
+
+        'pelajaran' => [
+            ['b', '➗', 'Matematika', '12 pelajaran', '#'],
+            ['y', '🐘', 'Dunia Hewan', '8 pelajaran',  '#'],
+            ['g', '🌱', 'Tumbuhan',   '6 pelajaran',  '#'],
+            ['p', '🔬', 'Sains',      '10 pelajaran', '#'],
+            ['o', '🌍', 'Lingkungan', '7 pelajaran',  '#'],
+        ],
+
+        'statistik' => [
+            ['📚', 12,   'Pelajaran selesai'],
+            ['📈', '65%', 'Progress belajar'],
+            ['🔥', 5,    'Hari belajar'],
+        ],
+    ];
+
+    return view('menu/VHomeSudahLogin', $data);
+}
 }

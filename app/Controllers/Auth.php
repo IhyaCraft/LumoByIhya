@@ -4,27 +4,24 @@ namespace App\Controllers;
 
 use App\Models\UserModel;
 use App\Models\OtpModel;
-use App\Models\RememberTokenModel;
 
 class Auth extends BaseController
 {
     protected UserModel $userModel;
     protected OtpModel $otpModel;
-    protected $rememberTokenModel;
 
     public function __construct()
     {
         $this->userModel = new UserModel();
         $this->otpModel = new OtpModel();
-        $this->rememberTokenModel = new RememberTokenModel();
     }
 
     public function login()
-    {
-        return view('auth/VLogin', [
-            'judul' => 'Masuk — Lumo'
-        ]);
-    }
+{
+    return view('auth/VLogin', [
+        'judul' => 'Masuk — Lumo'
+    ]);
+}
 
     public function proses_login()
     {
@@ -81,8 +78,6 @@ class Auth extends BaseController
                 ->with('error', 'Akun tidak dapat digunakan.');
         }
 
-        $ingat = $this->request->getPost('ingat') === '1';
-
         session()->regenerate();
 
         session()->set([
@@ -93,19 +88,15 @@ class Auth extends BaseController
             'isLoggedIn' => true
         ]);
 
-        if ($ingat) {
-            $token = bin2hex(random_bytes(32));
-            $tokenHash = password_hash($token, PASSWORD_DEFAULT);
+        return redirect()->to(site_url('home'));
+    }
 
-            $this->rememberTokenModel->insert([
-                'user_id' => $user['id'],
-                'token_hash' => $tokenHash,
-                'expires_at' => date('Y-m-d H:i:s', time() + (30 * 24 * 60 * 60)),
-                'created_at' => date('Y-m-d H:i:s')
-            ]);
-        }
+    public function logout()
+    {
+        session()->destroy();
 
-        return redirect()->to(site_url('/'));
+        return redirect()->to(site_url('masuk'))
+            ->with('success', 'Kamu berhasil keluar dari Lumo.');
     }
 
     public function daftar()
@@ -359,16 +350,24 @@ class Auth extends BaseController
                 ->with('error', 'Verifikasi gagal. Silakan coba lagi.');
         }
 
-        session()->remove([
+            session()->remove([
             'otp_user_id',
             'otp_email',
             'otp_type',
-            'register_otp_resend_at'
+            'register_otp_resend_at',
+            'user_id',
+            'name',
+            'email',
+            'status',
+            'isLoggedIn'
         ]);
+
+        session()->regenerate();
 
         return redirect()->to(site_url('masuk'))
             ->with('success', 'Email berhasil diverifikasi. Silakan masuk.');
     }
+    
 
     public function kirimUlangOtp()
     {

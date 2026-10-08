@@ -1,4 +1,3 @@
-
 (function () {
     var form = document.getElementById('formMasuk');
     var email = document.getElementById('email');

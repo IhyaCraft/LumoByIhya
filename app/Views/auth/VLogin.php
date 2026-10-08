@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -87,14 +86,6 @@
                     <p class="err" id="err-password" role="alert"></p>
                 </div>
 
-                <div class="baris">
-                    <label class="centang">
-                        <input type="checkbox" name="ingat" value="1">
-                        <span>Ingat saya</span>
-                    </label>
-
-                    <a class="lupa" href="#">Lupa kata sandi?</a>
-                </div>
 
                 <button
                     type="submit"
@@ -104,6 +95,8 @@
                     Masuk
                 </button>
 
+                
+
                 <button
                     type="button"
                     class="btn sec blok"
@@ -111,7 +104,15 @@
                 >
                     Masuk sebagai Tamu
                 </button>
+
+            </div>
+
             </form>
+            
+            <p class="pindah">
+                Lupa kata sandi?
+                <a href="<?= site_url('auth/lupa-password') ?>"> Reset</a>
+            </p>
 
             <p class="pindah">
                 Belum punya akun?

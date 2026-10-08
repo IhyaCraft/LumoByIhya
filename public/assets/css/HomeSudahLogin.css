@@ -1,0 +1,803 @@
+.hm {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.hm-main {
+  position: relative;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 20px 18px calc(116px + env(safe-area-inset-bottom, 0px));
+  overflow-x: clip;
+}
+
+.hm .btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.hm-nav {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+  display: flex;
+  gap: 4px;
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--ln);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+}
+
+.hm-nav a {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 58px;
+  border-radius: 16px;
+  color: var(--mu);
+  font: 700 13px Nunito, system-ui, sans-serif;
+  overflow: hidden;
+  transition: background 0.2s, color 0.2s;
+}
+
+.hm-nav a:hover {
+  background: var(--bg);
+}
+
+.hm-nav a.aktif {
+  background: var(--orS);
+  color: var(--tx);
+}
+
+.hm-nav a.aktif::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 30px;
+  height: 4px;
+  border-radius: 0 0 6px 6px;
+  background: var(--or);
+  translate: -50% 0;
+  animation: hmGaris 0.6s cubic-bezier(0.3, 1.4, 0.5, 1) 0.4s both;
+}
+
+.hm-nav .ik {
+  font-size: 22px;
+  line-height: 1;
+  transition: transform 0.3s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+.hm-nav a:active .ik {
+  transform: scale(0.8);
+}
+
+.hm-nav a.aktif .ik {
+  animation: hmPop 0.7s cubic-bezier(0.3, 1.6, 0.5, 1) 0.5s both;
+}
+
+.hm-nav .hm-logo {
+  display: none;
+}
+
+.hm-sapa {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.hm-teks {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.hm-waktu {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--ye);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.hm-waktu:empty {
+  display: none;
+}
+
+.hm-sapa h1 {
+  margin-bottom: 4px;
+  font-size: clamp(28px, 7vw, 42px);
+}
+
+.hm-sapa p {
+  color: var(--mu);
+}
+
+.hm-wave {
+  display: inline-block;
+  transform-origin: 70% 75%;
+  animation: hmWave 2.2s ease-in-out 1s 2;
+}
+
+.hm-deko {
+  position: absolute;
+  z-index: 0;
+  border-radius: 14px;
+  pointer-events: none;
+  animation: hmMelayang 7s ease-in-out infinite;
+}
+
+.hm-deko.d1 {
+  top: -8px;
+  left: 46%;
+  width: 26px;
+  height: 26px;
+  background: var(--pu);
+  rotate: 18deg;
+}
+
+.hm-deko.d2 {
+  bottom: -6px;
+  left: 30%;
+  width: 18px;
+  height: 18px;
+  background: var(--gr);
+  rotate: -12deg;
+  animation-delay: 2s;
+}
+
+.hm-maskot {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 28px;
+  background: var(--bl);
+  transition: background 0.3s;
+}
+
+.hm-maskot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 30%), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0) 60%);
+  pointer-events: none;
+}
+
+.hm-mk {
+  position: relative;
+  width: 62px;
+  cursor: pointer;
+  animation: hmFl 5s ease-in-out infinite;
+}
+
+.hm-mk rect[width="14"] {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.08s, translate 0.15s ease-out;
+}
+
+.hm-mk rect[width="5"] {
+  transition: translate 0.15s ease-out;
+}
+
+.hm-mk rect[width="14"].kedip {
+  transform: scaleY(0.1);
+}
+
+.hm-mk.lompat {
+  animation: hmLompat 0.75s ease;
+}
+
+.hm-gel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 3;
+  width: max-content;
+  max-width: 190px;
+  padding: 8px 14px;
+  border-radius: 14px;
+  background: var(--sf);
+  box-shadow: 0 8px 20px rgba(43, 43, 51, 0.12);
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0;
+  scale: 0.85;
+  translate: 0 -6px;
+  transform-origin: top right;
+  transition: opacity 0.25s, scale 0.25s, translate 0.25s;
+  pointer-events: none;
+}
+
+.hm-gel.lihat {
+  opacity: 1;
+  scale: 1;
+  translate: 0 0;
+}
+
+.hm-lanjut {
+  position: relative;
+  margin-bottom: 40px;
+  padding: 22px;
+  border-radius: 32px;
+  overflow: hidden;
+  transition: transform 0.2s ease-out, box-shadow 0.3s;
+}
+
+.hm-lanjut::before,
+.hm-lanjut::after {
+  content: "";
+  position: absolute;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+  animation: hmMelayang 8s ease-in-out infinite;
+}
+
+.hm-lanjut::before {
+  top: -34px;
+  right: -26px;
+  width: 120px;
+  height: 120px;
+  rotate: 16deg;
+}
+
+.hm-lanjut::after {
+  right: 20%;
+  bottom: -30px;
+  width: 80px;
+  height: 80px;
+  rotate: -14deg;
+  animation-delay: 2.5s;
+}
+
+.hm-lanjut > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hm-pil {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--sf);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.hm-isi {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.hm-isi > div:last-child {
+  min-width: 0;
+}
+
+.hm-isi .ic {
+  flex: 0 0 auto;
+  margin-bottom: 0;
+  background: var(--sf);
+  animation: hmPop 0.8s cubic-bezier(0.3, 1.6, 0.5, 1) 0.5s both;
+}
+
+.hm-mapel {
+  color: var(--mu);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.hm-isi h2 {
+  margin: 0;
+  font-size: clamp(21px, 4.5vw, 28px);
+}
+
+.hm-bar {
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  overflow: hidden;
+}
+
+.hm-bar i {
+  position: relative;
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--or);
+  overflow: hidden;
+  transition: width 1.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.hm-bar i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  translate: -100% 0;
+  animation: hmKilat 4s ease-in-out 2.4s infinite;
+}
+
+.hm-baris {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.hm-persen {
+  font-weight: 600;
+}
+
+.hm-lanjut .pri {
+  animation: hmDenyut 3.6s ease-in-out 3s infinite;
+}
+
+.hm-judul {
+  margin-bottom: 16px;
+  font-size: clamp(22px, 4vw, 28px);
+}
+
+.hm-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 40px;
+}
+
+.hm-grid .hm-kartu:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+.hm-kartu {
+  position: relative;
+  display: block;
+  padding: 20px;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.hm-kartu h3 {
+  margin-bottom: 4px;
+  font-size: 19px;
+}
+
+.hm-kartu p {
+  font-size: 15px;
+}
+
+.hm-kartu .ic {
+  transition: transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+.hm-kartu:hover .ic {
+  transform: rotate(-8deg) scale(1.12);
+}
+
+.hm-kartu::before {
+  content: "→";
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--bg);
+  font-weight: 800;
+  opacity: 0;
+  translate: -8px 0;
+  transition: opacity 0.25s, translate 0.25s, background 0.25s;
+}
+
+.hm-kartu:hover::before,
+.hm-kartu:focus-visible::before {
+  opacity: 1;
+  translate: 0 0;
+  background: var(--orS);
+}
+
+.hm-stat {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.hm-stat .card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 18px 8px;
+  border-radius: 24px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hm-emo {
+  display: inline-block;
+  font-size: 26px;
+}
+
+.hm-stat .tampil .hm-emo,
+.hm-stat .card.tampil .hm-emo {
+  animation: hmPop 0.8s cubic-bezier(0.3, 1.6, 0.5, 1) 0.3s both;
+}
+
+.hm-stat b {
+  font: 900 26px Nunito, system-ui, sans-serif;
+}
+
+.hm-stat .card > span:last-child {
+  color: var(--mu);
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+[data-tilt] {
+  transition: transform 0.18s ease-out, box-shadow 0.3s, opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s), translate 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s);
+}
+
+[data-tilt]:hover {
+  box-shadow: 0 16px 32px rgba(43, 43, 51, 0.1);
+}
+
+[data-tilt] > .glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(240, 170, 90, 0.2), transparent 50%);
+  opacity: 0;
+  transition: opacity 0.25s;
+  pointer-events: none;
+}
+
+[data-tilt]:hover > .glow {
+  opacity: 1;
+}
+
+.hm-in {
+  animation: hmUp 0.75s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 120ms);
+}
+
+.js [data-rv] {
+  opacity: 0;
+  translate: 0 28px;
+  transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s), translate 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s);
+}
+
+.js [data-rv].tampil {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.js [data-tilt][data-rv] {
+  transition: transform 0.18s ease-out, box-shadow 0.3s, opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s), translate 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s);
+}
+
+.hm-riak {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(200, 95, 27, 0.22);
+  translate: -50% -50%;
+  pointer-events: none;
+  animation: hmRiak 0.65s ease-out forwards;
+}
+
+.pri .hm-riak {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.hm-konfeti {
+  position: fixed;
+  z-index: 50;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+@keyframes hmFl {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes hmUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+}
+
+@keyframes hmMelayang {
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+@keyframes hmWave {
+  0%,
+  60%,
+  100% {
+    rotate: 0deg;
+  }
+  10%,
+  30% {
+    rotate: 16deg;
+  }
+  20%,
+  40% {
+    rotate: -10deg;
+  }
+  50% {
+    rotate: 8deg;
+  }
+}
+
+@keyframes hmPop {
+  from {
+    scale: 0;
+    rotate: -20deg;
+  }
+  to {
+    scale: 1;
+    rotate: 0deg;
+  }
+}
+
+@keyframes hmGaris {
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
+@keyframes hmLompat {
+  0% {
+    transform: translateY(0) scale(1, 1);
+  }
+  25% {
+    transform: translateY(4px) scale(1.07, 0.93);
+  }
+  55% {
+    transform: translateY(-16px) scale(0.96, 1.06);
+  }
+  80% {
+    transform: translateY(0) scale(1.05, 0.95);
+  }
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+}
+
+@keyframes hmKilat {
+  0%,
+  55%,
+  100% {
+    translate: -100% 0;
+  }
+  80% {
+    translate: 100% 0;
+  }
+}
+
+@keyframes hmDenyut {
+  0%,
+  60%,
+  100% {
+    box-shadow: 0 4px 0 #8F4210, 0 0 0 0 rgba(200, 95, 27, 0);
+  }
+  30% {
+    box-shadow: 0 4px 0 #8F4210, 0 0 0 9px rgba(200, 95, 27, 0.18);
+  }
+}
+
+@keyframes hmRiak {
+  to {
+    scale: 30;
+    opacity: 0;
+  }
+}
+
+@media (min-width: 640px) {
+  .hm-main {
+    padding: 32px 28px calc(120px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .hm-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .hm-grid .hm-kartu:last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+
+  .hm-lanjut {
+    padding: 32px;
+  }
+
+  .hm-stat {
+    gap: 16px;
+  }
+
+  .hm-stat .card {
+    padding: 24px 12px;
+  }
+
+  .hm-stat .card > span:last-child {
+    font-size: 15px;
+  }
+
+  .hm-maskot {
+    width: 110px;
+    height: 110px;
+  }
+
+  .hm-mk {
+    width: 76px;
+  }
+}
+
+@media (min-width: 900px) {
+  .hm {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+  }
+
+  .hm-nav {
+    position: sticky;
+    top: 0;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    flex-direction: column;
+    gap: 6px;
+    height: 100vh;
+    height: 100dvh;
+    padding: 28px 16px;
+    border-top: 0;
+    border-right: 1px solid var(--ln);
+    background: var(--sf);
+    backdrop-filter: none;
+  }
+
+  .hm-nav .hm-logo {
+    display: flex;
+    margin: 0 0 24px 12px;
+  }
+
+  .hm-nav a {
+    flex: 0 0 auto;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 14px;
+    min-height: 52px;
+    padding: 0 16px;
+    font-size: 17px;
+  }
+
+  .hm-nav a:hover:not(.aktif) {
+    translate: 4px 0;
+  }
+
+  .hm-nav a.hm-logo {
+    padding: 0;
+    font-size: 26px;
+  }
+
+  .hm-nav a.hm-logo:hover {
+    background: transparent;
+    translate: 0 0;
+  }
+
+  .hm-nav a.aktif::before {
+    top: 50%;
+    left: 0;
+    width: 5px;
+    height: 28px;
+    border-radius: 0 6px 6px 0;
+    translate: 0 -50%;
+    animation: hmGarisV 0.6s cubic-bezier(0.3, 1.4, 0.5, 1) 0.4s both;
+  }
+
+  .hm-main {
+    width: 100%;
+    max-width: 960px;
+    padding: 44px 44px 64px;
+  }
+
+  .hm-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hm-sapa {
+    margin-bottom: 32px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hm-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .hm-main {
+    max-width: 1040px;
+  }
+}
+
+@media (max-width: 360px) {
+  .hm-main {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .hm-stat {
+    gap: 8px;
+  }
+
+  .hm-stat b {
+    font-size: 22px;
+  }
+
+  .hm-baris {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hm-baris .btn {
+    width: 100%;
+  }
+
+  .hm-persen {
+    text-align: center;
+  }
+}
+
+@keyframes hmGarisV {
+  from {
+    scale: 1 0;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hm *,
+  .hm *::before,
+  .hm *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .hm-in {
+    opacity: 1;
+  }
+}
