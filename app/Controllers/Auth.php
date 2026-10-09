@@ -449,4 +449,326 @@ class Auth extends BaseController
         return redirect()->to(site_url('verifikasi'))
             ->with('success', 'Kode OTP baru berhasil dikirim.');
     }
+    public function lupaPassword()
+    {
+        return view('auth/VLupaPassword', [
+            'judul' => 'Lupa Kata Sandi — Lumo'
+        ]);
+    }
+    public function prosesLupaPassword()
+{
+    $rules = [
+        'email' => 'required|valid_email|max_length[255]'
+    ];
+
+    if (!$this->validate($rules)) {
+        return redirect()->back()
+            ->withInput()
+            ->with('errors', $this->validator->getErrors());
+    }
+
+    $email = strtolower(trim((string) $this->request->getPost('email')));
+
+    $user = $this->userModel
+        ->where('email', $email)
+        ->where('status', 'active')
+        ->first();
+
+    if (!$user) {
+        return redirect()->to(site_url('auth/lupa-password'))
+            ->with('success', 'Jika email terdaftar dan dapat digunakan, instruksi reset akan dikirim.');
+    }
+
+    $otp = (string) random_int(100000, 999999);
+    $now = date('Y-m-d H:i:s');
+
+    $db = db_connect();
+    $db->transBegin();
+
+    $this->otpModel
+        ->where('user_id', $user['id'])
+        ->where('type', 'password_reset')
+        ->where('verified_at', null)
+        ->delete();
+
+    $otpId = $this->otpModel->insert([
+        'user_id' => $user['id'],
+        'otp_hash' => password_hash($otp, PASSWORD_DEFAULT),
+        'type' => 'password_reset',
+        'expires_at' => date('Y-m-d H:i:s', time() + 300),
+        'attempts' => 0,
+        'verified_at' => null,
+        'created_at' => $now
+    ], true);
+
+    if (!$otpId) {
+        $db->transRollback();
+
+        return redirect()->back()
+            ->with('error', 'Gagal membuat kode OTP. Silakan coba lagi.');
+    }
+
+    $mailer = service('email');
+
+    $mailer->setFrom('lumoeducationofc@gmail.com', 'Lumo Education');
+    $mailer->setTo($email);
+    $mailer->setSubject('Reset Kata Sandi — Lumo');
+    $mailer->setMessage(
+        '<h2>Reset Kata Sandi Lumo</h2>
+        <p>Halo ' . esc($user['name']) . ',</p>
+        <p>Gunakan kode berikut untuk memverifikasi permintaan reset kata sandi:</p>
+        <h1>' . $otp . '</h1>
+        <p>Kode OTP berlaku selama 5 menit.</p>
+        <p>Jika kamu tidak meminta reset kata sandi, abaikan email ini.</p>'
+    );
+
+    if (!$mailer->send()) {
+        $this->otpModel->delete($otpId);
+        $db->transRollback();
+
+        return redirect()->back()
+            ->with('error', 'Email OTP gagal dikirim. Silakan coba lagi.');
+    }
+
+    $db->transComplete();
+
+    if ($db->transStatus() === false) {
+        return redirect()->back()
+            ->with('error', 'Permintaan reset gagal diproses. Silakan coba lagi.');
+    }
+
+    session()->remove([
+        'reset_user_id',
+        'reset_email',
+        'reset_otp_resend_at',
+        'reset_verified_at'
+    ]);
+
+    session()->set([
+        'reset_user_id' => $user['id'],
+        'reset_email' => $email,
+        'reset_otp_resend_at' => time()
+    ]);
+
+    return redirect()->to(site_url('auth/verifikasi-reset-password'));
+}
+
+
+public function prosesVerifikasiResetPassword()
+{
+    $userId = session()->get('reset_user_id');
+    $email = session()->get('reset_email');
+    $otp = trim((string) $this->request->getPost('otp'));
+
+    if (!$userId || !$email) {
+        return redirect()->to(site_url('auth/lupa-password'))
+            ->with('error', 'Sesi reset kata sandi tidak ditemukan.');
+    }
+
+    if (!preg_match('/^[0-9]{6}$/', $otp)) {
+        return redirect()->back()
+            ->with('error', 'Masukkan kode OTP 6 digit yang valid.');
+    }
+
+    $user = $this->userModel->find($userId);
+
+    if (!$user || $user['email'] !== $email || $user['status'] !== 'active') {
+        session()->remove([
+            'reset_user_id',
+            'reset_email',
+            'reset_otp_resend_at',
+            'reset_verified_at'
+        ]);
+
+        return redirect()->to(site_url('auth/lupa-password'))
+            ->with('error', 'Sesi reset kata sandi tidak valid.');
+    }
+
+    $otpData = $this->otpModel
+        ->where('user_id', $userId)
+        ->where('type', 'password_reset')
+        ->where('verified_at', null)
+        ->orderBy('id', 'DESC')
+        ->first();
+
+    if (!$otpData) {
+        return redirect()->back()
+            ->with('error', 'Kode OTP tidak ditemukan atau sudah digunakan.');
+    }
+
+    if (strtotime($otpData['expires_at']) <= time()) {
+        return redirect()->back()
+            ->with('error', 'Kode OTP sudah kedaluwarsa. Silakan kirim ulang.');
+    }
+
+    if ((int) $otpData['attempts'] >= 5) {
+        return redirect()->back()
+            ->with('error', 'Batas 5 percobaan OTP sudah tercapai. Silakan kirim ulang kode.');
+    }
+
+    if (!password_verify($otp, $otpData['otp_hash'])) {
+        $this->otpModel->update($otpData['id'], [
+            'attempts' => (int) $otpData['attempts'] + 1
+        ]);
+
+        return redirect()->back()
+            ->with('error', 'Kode OTP salah.');
+    }
+
+    $now = date('Y-m-d H:i:s');
+
+    if (!$this->otpModel->update($otpData['id'], [
+        'verified_at' => $now
+    ])) {
+        return redirect()->back()
+            ->with('error', 'Verifikasi OTP gagal. Silakan coba lagi.');
+    }
+
+    session()->set([
+        'reset_verified_at' => time()
+    ]);
+
+    return redirect()->to(site_url('auth/reset-password'))
+        ->with('success', 'OTP berhasil diverifikasi. Silakan buat kata sandi baru.');
+}
+
+
+public function kirimUlangOtpReset()
+{
+    $userId = session()->get('reset_user_id');
+    $email = session()->get('reset_email');
+
+    if (!$userId || !$email) {
+        return redirect()->to(site_url('auth/lupa-password'))
+            ->with('error', 'Sesi reset kata sandi tidak ditemukan.');
+    }
+
+    $lastResend = session()->get('reset_otp_resend_at');
+
+    if ($lastResend) {
+        $remaining = 60 - (time() - (int) $lastResend);
+
+        if ($remaining > 0) {
+            return redirect()->to(site_url('auth/verifikasi-reset-password'))
+                ->with('error', 'Tunggu ' . $remaining . ' detik sebelum mengirim ulang OTP.');
+        }
+    }
+
+    $user = $this->userModel->find($userId);
+
+    if (!$user || $user['email'] !== $email || $user['status'] !== 'active') {
+        session()->remove([
+            'reset_user_id',
+            'reset_email',
+            'reset_otp_resend_at',
+            'reset_verified_at'
+        ]);
+
+        return redirect()->to(site_url('auth/lupa-password'))
+            ->with('error', 'Akun tidak dapat melakukan reset kata sandi.');
+    }
+
+    $otp = (string) random_int(100000, 999999);
+
+    $otpId = $this->otpModel->insert([
+        'user_id' => $userId,
+        'otp_hash' => password_hash($otp, PASSWORD_DEFAULT),
+        'type' => 'password_reset',
+        'expires_at' => date('Y-m-d H:i:s', time() + 300),
+        'attempts' => 0,
+        'verified_at' => null,
+        'created_at' => date('Y-m-d H:i:s')
+    ], true);
+
+    if (!$otpId) {
+        return redirect()->to(site_url('auth/verifikasi-reset-password'))
+            ->with('error', 'Gagal membuat kode OTP baru.');
+    }
+
+    $mailer = service('email');
+
+    $mailer->setFrom('lumoeducationofc@gmail.com', 'Lumo Education');
+    $mailer->setTo($email);
+    $mailer->setSubject('Kode Reset Kata Sandi Baru — Lumo');
+    $mailer->setMessage(
+        '<h2>Reset Kata Sandi Lumo</h2>
+        <p>Halo ' . esc($user['name']) . ',</p>
+        <p>Gunakan kode OTP berikut untuk melanjutkan reset kata sandi:</p>
+        <h1>' . $otp . '</h1>
+        <p>Kode OTP berlaku selama 5 menit.</p>
+        <p>Jika kamu tidak meminta reset kata sandi, abaikan email ini.</p>'
+    );
+
+    if (!$mailer->send()) {
+        $this->otpModel->delete($otpId);
+
+        return redirect()->to(site_url('auth/verifikasi-reset-password'))
+            ->with('error', 'Email OTP gagal dikirim. Silakan coba lagi.');
+    }
+
+    $this->otpModel
+        ->where('user_id', $userId)
+        ->where('type', 'password_reset')
+        ->where('verified_at', null)
+        ->where('id !=', $otpId)
+        ->delete();
+
+    session()->set([
+        'reset_otp_resend_at' => time()
+    ]);
+
+    return redirect()->to(site_url('auth/verifikasi-reset-password'))
+        ->with('success', 'Kode OTP baru berhasil dikirim.');
+}
+
+public function verifikasiResetPassword()
+{
+    $userId = session()->get('reset_user_id');
+    $email = session()->get('reset_email');
+
+    if (!$userId || !$email) {
+        return redirect()->to(site_url('auth/lupa-password'))
+            ->with('error', 'Sesi reset kata sandi tidak ditemukan.');
+    }
+
+    $user = $this->userModel->find($userId);
+
+    if (!$user || $user['email'] !== $email || $user['status'] !== 'active') {
+        session()->remove([
+            'reset_user_id',
+            'reset_email',
+            'reset_otp_resend_at',
+            'reset_verified_at'
+        ]);
+
+        return redirect()->to(site_url('auth/lupa-password'))
+            ->with('error', 'Sesi reset kata sandi tidak valid.');
+    }
+
+    $otpData = $this->otpModel
+        ->where('user_id', $userId)
+        ->where('type', 'password_reset')
+        ->where('verified_at', null)
+        ->orderBy('id', 'DESC')
+        ->first();
+
+    if (!$otpData) {
+        return redirect()->to(site_url('auth/lupa-password'))
+            ->with('error', 'Silakan minta kode OTP reset password terlebih dahulu.');
+    }
+
+    $remaining = 0;
+    $lastResend = session()->get('reset_otp_resend_at');
+
+    if ($lastResend) {
+        $remaining = max(0, 60 - (time() - (int) $lastResend));
+    }
+
+    return view('auth/VVerifikasiResetPassword', [
+        'judul' => 'Verifikasi Reset Kata Sandi — Lumo',
+        'email' => $email,
+        'resendRemaining' => $remaining
+    ]);
+}
+
 }

@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title><?= esc($judul ?? 'Masuk — Lumo') ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="<?= base_url('assets/css/home.css') ?>">
-<link rel="stylesheet" href="<?= base_url('assets/css/login.css') ?>">
+<link rel="stylesheet" href="<?= base_url('assets/css/home/home.css') ?>">
+<link rel="stylesheet" href="<?= base_url('assets/css/auth/login.css') ?>">
 </head>
 <body>
 

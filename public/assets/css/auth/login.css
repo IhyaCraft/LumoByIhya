@@ -420,19 +420,3 @@
     opacity: .7;
     cursor: not-allowed;
 }
-.lupa-sandi {
-    display: block;
-    width: fit-content;
-    margin-top: 8px;
-    margin-left: auto;
-    color: #596575;
-    font-family: 'Nunito', sans-serif;
-    font-size: 13px;
-    font-weight: 800;
-    text-decoration: none;
-    transition: color .2s ease;
-}
-
-.lupa-sandi:hover {
-    color: #0a0f17;
-}
