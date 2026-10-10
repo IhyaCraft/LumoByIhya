@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="<?= base_url('assets/css/home/home.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/auth/login.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/auth/verifikasi.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/auth/lupa-password.css') ?>">
 </head>
 <body>
 
@@ -78,7 +78,11 @@
                     >
                 </div>
 
-                <button type="submit" class="btn pri blok">
+                <button
+                    type="submit"
+                    class="btn pri blok"
+                    id="tombolKonfirmasiEmail"
+                >
                     Lanjutkan
                 </button>
             </form>
@@ -90,5 +94,19 @@
 
 </div>
 
+<div class="loading-email" id="loadingDaftar" aria-hidden="true">
+    <div class="loading-card" role="status" aria-live="polite">
+        <div class="loading-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <h2>Kode verifikasi sedang dikirim...</h2>
+        <p>Tunggu sebentar, ya!</p>
+    </div>
+</div>
+
+<script src="<?= base_url('assets/js/auth/lupa-password.js') ?>"></script>
 </body>
 </html>
