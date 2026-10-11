@@ -476,10 +476,10 @@ class Auth extends BaseController
             ->where('status', 'active')
             ->first();
 
-        if (!$user) {
-            return redirect()->to(site_url('auth/lupa-password'))
-                ->with('success', 'Jika email terdaftar, petunjuk reset kata sandi akan dikirim.');
-        }
+       if (!$user) {
+    return redirect()->to(site_url('auth/lupa-password'))
+        ->with('error', 'Email belum terdaftar di Lumo. Coba periksa kembali, ya!');
+}
 
         $otp = (string) random_int(100000, 999999);
 

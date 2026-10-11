@@ -101,6 +101,15 @@
     }
 
     function setVisibility(visible) {
+
+        
+    var maskot = document.querySelector('.panggung .mk');
+
+    if (maskot) {
+        maskot.classList.toggle('tutup', visible);
+    }
+
+
         var type = visible ? 'text' : 'password';
         passwordInput.type = type;
         confirmInput.type = type;

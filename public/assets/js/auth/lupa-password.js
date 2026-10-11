@@ -1,20 +1,19 @@
 
-const formKonfirmasiEmail = document.querySelector('#formKonfirmasiEmail');
-const tombolKonfirmasiEmail = document.querySelector('#tombolKonfirmasiEmail');
-const loadingDaftar = document.querySelector('#loadingDaftar');
+const formKonfirmasiEmail = document.getElementById('formKonfirmasiEmail');
+const loadingDaftar = document.getElementById('loadingDaftar');
+const tombolKonfirmasiEmail = document.getElementById('tombolKonfirmasiEmail');
 
-if (formKonfirmasiEmail && tombolKonfirmasiEmail && loadingDaftar) {
+if (formKonfirmasiEmail && loadingDaftar) {
     formKonfirmasiEmail.addEventListener('submit', function (event) {
         if (!formKonfirmasiEmail.checkValidity()) {
-            event.preventDefault();
-            formKonfirmasiEmail.reportValidity();
             return;
         }
 
-        tombolKonfirmasiEmail.disabled = true;
-        tombolKonfirmasiEmail.textContent = 'Memproses...';
-
-        loadingDaftar.classList.add('aktif');
+        loadingDaftar.classList.add('is-active');
         loadingDaftar.setAttribute('aria-hidden', 'false');
+
+        if (tombolKonfirmasiEmail) {
+            tombolKonfirmasiEmail.disabled = true;
+        }
     });
 }

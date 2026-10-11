@@ -1,11 +1,23 @@
 <?php
 
-$menu = [
-    ['Beranda',      '#beranda'],
-    ['Pelajaran',    '#pelajaran'],
-    ['Cara Kerja',   '#cara-kerja'],
-    ['Tentang Kami', '#tentang'],
-];
+$login = (bool) session()->get('isLoggedIn');
+
+$namaLengkap = trim((string) session()->get('nama'));
+$inisial     = mb_strtoupper(mb_substr($namaLengkap !== '' ? $namaLengkap : 'T', 0, 1));
+
+$menu = $login
+    ? [
+        ['Beranda',    '#beranda'],
+        ['Pelajaran',  '#pelajaran'],
+        ['Pencapaian', '#pencapaian'],
+        ['Profil',     site_url('profil')],
+    ]
+    : [
+        ['Beranda',      '#beranda'],
+        ['Pelajaran',    '#pelajaran'],
+        ['Cara Kerja',   '#cara-kerja'],
+        ['Tentang Kami', '#tentang'],
+    ];
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -15,6 +27,9 @@ $menu = [
 <title><?= esc($judul ?? 'Lumo') ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?= base_url('assets/css/home/home.css') ?>">
+<?php if ($login): ?>
+<link rel="stylesheet" href="<?= base_url('assets/css/home/vhome.css') ?>">
+<?php endif; ?>
 </head>
 <body>
 
@@ -26,8 +41,14 @@ $menu = [
     <?php endforeach; ?>
   </div>
   <div class="rt">
-    <a class="btn sec" href="<?=site_url('masuk')?>">Masuk</a>
-    <a class="btn pri" href="<?=site_url('masuk')?>">Mulai Sekarang</a>
+    <?php if ($login): ?>
+      <span class="chip">⭐ <?= esc($bintang ?? 0) ?></span>
+      <span class="av" aria-hidden="true"><?= esc($inisial) ?></span>
+      <a class="btn sec" href="<?= site_url('keluar') ?>">Keluar</a>
+    <?php else: ?>
+      <a class="btn sec" href="<?= site_url('masuk') ?>">Masuk</a>
+      <a class="btn pri" href="<?= site_url('masuk') ?>">Mulai Sekarang</a>
+    <?php endif; ?>
     <button class="mb" id="mb" aria-label="Buka menu" aria-expanded="false">☰</button>
   </div>
 </div>
@@ -35,8 +56,12 @@ $menu = [
   <?php foreach ($menu as [$teks, $link]): ?>
     <a href="<?= $link ?>"><?= $teks ?></a>
   <?php endforeach; ?>
-  <a href="#">Masuk</a>
-  <a class="btn pri" href="#daftar">Mulai Sekarang</a>
+  <?php if ($login): ?>
+    <a class="btn pri" href="<?= site_url('keluar') ?>">Keluar</a>
+  <?php else: ?>
+    <a href="<?= site_url('masuk') ?>">Masuk</a>
+    <a class="btn pri" href="#daftar">Mulai Sekarang</a>
+  <?php endif; ?>
 </div>
 </nav>
 
@@ -58,8 +83,13 @@ $menu = [
     </div>
     <div>
       <h4>Untuk Orang Tua</h4>
-      <a href="<?= site_url('masuk') ?>">Masuk</a>
-      <a href="#">Buat Akun</a>
+      <?php if ($login): ?>
+        <a href="<?= site_url('profil') ?>">Profil</a>
+        <a href="<?= site_url('keluar') ?>">Keluar</a>
+      <?php else: ?>
+        <a href="<?= site_url('masuk') ?>">Masuk</a>
+        <a href="#">Buat Akun</a>
+      <?php endif; ?>
     </div>
     <div>
       <h4>Informasi</h4>

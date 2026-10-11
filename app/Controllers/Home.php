@@ -55,7 +55,7 @@ class Home extends BaseController
 
         return view('menu/VHome', $data);
     }
-    public function dashboard()
+   public function dashboard()
 {
     if (! session()->get('isLoggedIn')) {
         return redirect()->to(base_url('masuk'));
@@ -63,31 +63,41 @@ class Home extends BaseController
 
     $nama = trim((string) session()->get('nama'));
 
-    $data = [
-        'judul'     => 'Beranda — Lumo',
-        'namaDepan' => $nama !== '' ? explode(' ', $nama)[0] : 'Teman',
+    $lanjut = [
+        'judul'  => 'Penjumlahan & Pengurangan',
+        'topik'  => 'Matematika',
+        'persen' => 65,
+        'url'    => site_url('pelajaran/matematika/penjumlahan-pengurangan'),
+    ];
 
-        'lanjut' => [
-            'warna'    => 'b',
-            'ikon'     => '➗',
-            'mapel'    => 'Matematika',
-            'materi'   => 'Penjumlahan & Pengurangan',
-            'progres'  => 65,
-            'tautan'   => '#',
-        ],
+    $data = [
+        'judul'      => 'Beranda — Lumo',
+        'aktif'      => 'beranda',
+        'nama'       => $nama !== '' ? explode(' ', $nama)[0] : 'Teman',
+        'bintang'    => 320,
+        'pencapaian' => 5,
+        'topik'      => $lanjut['topik'],
+        'terakhir'   => $lanjut,
 
         'pelajaran' => [
-            ['b', '➗', 'Matematika', '12 pelajaran', '#'],
-            ['y', '🐘', 'Dunia Hewan', '8 pelajaran',  '#'],
-            ['g', '🌱', 'Tumbuhan',   '6 pelajaran',  '#'],
-            ['p', '🔬', 'Sains',      '10 pelajaran', '#'],
-            ['o', '🌍', 'Lingkungan', '7 pelajaran',  '#'],
+            ['b', '➗', 'Matematika', '12 pelajaran', site_url('pelajaran/matematika')],
+            ['y', '🐘', 'Dunia Hewan', '8 pelajaran',  site_url('pelajaran/dunia-hewan')],
+            ['g', '🌱', 'Tumbuhan',   '6 pelajaran',  site_url('pelajaran/tumbuhan')],
+            ['p', '🔬', 'Sains',      '10 pelajaran', site_url('pelajaran/sains')],
+            ['o', '🌍', 'Lingkungan', '7 pelajaran',  site_url('pelajaran/lingkungan')],
         ],
 
         'statistik' => [
-            ['📚', 12,   'Pelajaran selesai'],
-            ['📈', '65%', 'Progress belajar'],
-            ['🔥', 5,    'Hari belajar'],
+            [12,    'Pelajaran selesai', 28],
+            ['65%', 'Progress belajar',  65],
+            [5,     'Hari belajar',      71],
+        ],
+
+        'pilihan' => [
+            ['Ikan',   1],
+            ['Kucing', 0],
+            ['Burung', 0],
+            ['Sapi',   0],
         ],
     ];
 

@@ -32,7 +32,7 @@
 
     <main class="area">
         <div class="kotak">
-            <a class="kembali" href="<?= site_url('daftar') ?>">← Kembali ke daftar</a>
+            <a class="kembali" href="<?= site_url('auth/lupa-password') ?>">← Kembali</a>
 
             <h1>Verifikasi email</h1>
 
@@ -53,9 +53,8 @@
                 </div>
             <?php endif; ?>
 
-            <form action="<?= site_url('verifikasi') ?>" method="post" id="formVerifikasi">
-                <?= csrf_field() ?>
-
+            <form action="<?= site_url('auth/verifikasi-reset-password') ?>" 
+            method="post" id="formVerifikasi">
                 <div class="bidang">
                     <label for="otp">Kode OTP</label>
                     <input
@@ -79,7 +78,7 @@
                 id="tombolKirimUlang"
                 disabled
                 data-remaining="<?= esc($resendRemaining ?? 0) ?>"
-                data-action="<?= site_url('kirim-ulang-otp') ?>"
+                data-action="<?= site_url('auth/kirim-ulang-otp-reset') ?>"
               >
                 <span>Kirim ulang OTP</span>
                 <span id="hitungMundur"></span>
