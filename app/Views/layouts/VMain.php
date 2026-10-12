@@ -28,7 +28,7 @@ $menu = $login
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?= base_url('assets/css/home/home.css') ?>">
 <?php if ($login): ?>
-<link rel="stylesheet" href="<?= base_url('assets/css/home/vhome.css') ?>">
+<link rel="stylesheet" href="<?= base_url('assets/css/home/home-sudah-login.css') ?>">
 <?php endif; ?>
 </head>
 <body>

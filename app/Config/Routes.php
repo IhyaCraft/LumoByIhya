@@ -29,3 +29,5 @@ $routes->post('auth/kirim-ulang-otp-reset', 'Auth::kirimUlangOtpReset');
 
 $routes->get('auth/reset-password', 'Auth::resetPassword');
 $routes->post('auth/reset-password', 'Auth::prosesResetPassword');
+
+$routes->get('profil', 'Profil::index');
