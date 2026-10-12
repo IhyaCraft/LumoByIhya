@@ -97,13 +97,13 @@
 
                 
 
-                <button
-                    type="button"
-                    class="btn sec blok"
-                    id="tombolTamu"
-                >
-                    Masuk sebagai Tamu
-                </button>
+            <a
+                href="<?= site_url('daftar') ?>"
+                class="btn sec blok"
+                id="tombolTamu"
+            >
+                Daftar
+            </a>
 
             </div>
 
@@ -114,10 +114,7 @@
                 <a href="<?= site_url('auth/lupa-password') ?>"> Reset</a>
             </p>
 
-            <p class="pindah">
-                Belum punya akun?
-                <a href="<?= site_url('daftar') ?>">Buat akun</a>
-            </p>
+            
 
             <p class="hak">© <?= date('Y') ?> Lumo</p>
 

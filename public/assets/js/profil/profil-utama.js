@@ -1,171 +1,265 @@
-(function(){
-"use strict";
-const LUMO={
-  name:"Ihya Ulumuddin",
-  firstName:"Ihya",
-  email:"ihya@email.com",
-  status:null,
-  lessons:null,
-  achievements:null,
-  target:null,
-  activity:null,
-  csrf:{name:"csrf_token_name",value:""},
-  flash:null
-};
 
-const $=s=>document.querySelector(s);
-const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+(function () {
+  "use strict";
 
-function renderIdentity(){
-  const h=$("#hello");
-  h.setAttribute("aria-label","Halo, "+LUMO.firstName+"!");
-  h.textContent="";
-  Array.from("Halo, "+LUMO.firstName+"!").forEach((ch,i)=>{
-    const s=document.createElement("span");
-    s.textContent=ch===" "?"\u00A0":ch;
-    s.setAttribute("aria-hidden","true");
-    s.style.animationDelay=(0.25+i*0.05)+"s";
-    h.appendChild(s);
-  });
-  $("#fullname").textContent=LUMO.name;
-  $("#email").textContent=LUMO.email;
-  if(LUMO.status){const st=$("#status");st.textContent=LUMO.status;st.hidden=false}
-  const c=$("#csrf");
-  c.name=LUMO.csrf.name;
-  c.value=LUMO.csrf.value;
-}
+  var NS = "http://www.w3.org/2000/svg";
+  var reduce = false;
 
-function countUp(el,to){
-  if(to===null||to===undefined){el.textContent="–";return}
-  if(reduce){el.textContent=to;return}
-  const t0=performance.now(),d=1400;
-  const step=t=>{
-    const p=Math.min((t-t0)/d,1),e=1-Math.pow(1-p,4);
-    el.textContent=Math.round(to*e);
-    if(p<1)requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
-}
+  try {
+    reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+  } catch (e) {}
 
-function renderStats(){
-  countUp($("#lessons"),LUMO.lessons);
-  countUp($("#achievements"),LUMO.achievements);
-  const t=LUMO.target;
-  if(t&&t.total>0){
-    const pct=Math.min(100,Math.round(t.done/t.total*100));
-    $("#target").hidden=false;
-    $("#targetLabel").textContent=t.label;
-    $("#targetPct").textContent=pct+"%";
-    $("#targetTrack").setAttribute("aria-valuenow",pct);
-    $("#targetTrack").setAttribute("aria-label",t.label);
-    requestAnimationFrame(()=>setTimeout(()=>{$("#targetFill").style.width=pct+"%"},200));
+  function sapaan() {
+    var el = document.querySelector("[data-sapaan]");
+    if (!el) return;
+
+    var jam = new Date().getHours();
+    var waktu =
+      jam < 11 ? "pagi" :
+      jam < 15 ? "siang" :
+      jam < 18 ? "sore" : "malam";
+
+    var nama = el.getAttribute("data-nama");
+
+    el.textContent =
+      "Selamat " + waktu + (nama ? ", " + nama : "") + "!";
   }
-}
 
-function renderChart(data){
-  const svg=$("#chart"),empty=$("#empty"),tip=$("#tip");
-  const has=Array.isArray(data)&&data.length===7&&data.some(d=>d.value>0);
-  if(!has){svg.hidden=true;empty.hidden=false;return}
-  empty.hidden=true;svg.hidden=false;
-  const W=700,H=280,pt=28,pb=44,pl=34,pr=12;
-  const max=Math.max(...data.map(d=>d.value),4);
-  const ch=H-pt-pb,slot=(W-pl-pr)/7,bw=Math.min(46,slot*.56);
-  svg.setAttribute("viewBox","0 0 "+W+" "+H);
-  svg.setAttribute("preserveAspectRatio","xMidYMid meet");
-  let out='<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E88A4D"/><stop offset="1" stop-color="#C85F1B"/></linearGradient></defs>';
-  for(let i=0;i<=4;i++){
-    const y=pt+ch-ch*i/4,v=Math.round(max*i/4);
-    out+='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y+'" y2="'+y+'" stroke="#ECE8DC" stroke-dasharray="4 6"/>';
-    out+='<text x="'+(pl-8)+'" y="'+(y+4)+'" text-anchor="end" font-size="12" fill="#62626E" font-family="Inter,sans-serif">'+v+'</text>';
+  function hitung() {
+    document.querySelectorAll("[data-hitung]").forEach(function (el) {
+      if (el.dataset.animasiSelesai === "true") return;
+
+      var target = parseInt(el.getAttribute("data-hitung"), 10);
+
+      if (!Number.isFinite(target)) target = 0;
+
+      target = Math.max(0, target);
+
+      if (reduce || target === 0) {
+        el.textContent = target;
+        el.dataset.animasiSelesai = "true";
+        return;
+      }
+
+      var mulai = null;
+      var durasi = 1000;
+
+      function langkah(waktu) {
+        if (mulai === null) mulai = waktu;
+
+        var progres = Math.min((waktu - mulai) / durasi, 1);
+        var halus = 1 - Math.pow(1 - progres, 4);
+
+        el.textContent = Math.round(target * halus);
+
+        if (progres < 1) {
+          requestAnimationFrame(langkah);
+        } else {
+          el.textContent = target;
+          el.dataset.animasiSelesai = "true";
+        }
+      }
+
+      requestAnimationFrame(langkah);
+    });
   }
-  data.forEach((d,i)=>{
-    const h=Math.max(d.value/max*ch,d.value>0?10:4),x=pl+slot*i+(slot-bw)/2,y=pt+ch-h;
-    out+='<rect class="bar" x="'+x+'" y="'+y+'" width="'+bw+'" height="'+h+'" rx="'+Math.min(14,bw/2)+'" fill="'+(d.value>0?'url(#g)':'#FCE3CF')+'" style="animation-delay:'+(i*0.09)+'s"/>';
-    out+='<rect class="bar-hit" x="'+(pl+slot*i)+'" y="'+pt+'" width="'+slot+'" height="'+ch+'" data-i="'+i+'"/>';
-    out+='<text x="'+(x+bw/2)+'" y="'+(H-16)+'" text-anchor="middle" font-size="13" font-weight="600" fill="#62626E" font-family="Inter,sans-serif">'+d.label+'</text>';
-  });
-  svg.innerHTML=out;
-  svg.querySelectorAll(".bar-hit").forEach(r=>{
-    const show=()=>{
-      const d=data[+r.dataset.i],bb=r.getBoundingClientRect(),pb2=svg.parentElement.getBoundingClientRect();
-      tip.textContent=d.value+" pelajaran";
-      tip.style.left=(bb.left-pb2.left+bb.width/2)+"px";
-      tip.style.top=(bb.top-pb2.top+20)+"px";
-      tip.classList.add("on");
+
+  function buat(nama, atribut, induk) {
+    var el = document.createElementNS(NS, nama);
+
+    Object.keys(atribut).forEach(function (k) {
+      el.setAttribute(k, atribut[k]);
+    });
+
+    if (induk) induk.appendChild(el);
+
+    return el;
+  }
+
+  function grafik() {
+    var svg = document.getElementById("pu-grafik");
+    if (!svg || svg.dataset.grafikDibuat === "true") return;
+
+    var data;
+
+    try {
+      data = JSON.parse(svg.getAttribute("data-aktivitas") || "[]");
+    } catch (e) {
+      return;
+    }
+
+    if (!Array.isArray(data) || data.length < 2) return;
+
+    data = data.map(function (item) {
+      return {
+        nilai: Number(item.nilai),
+        label: String(item.label == null ? "" : item.label)
+      };
+    });
+
+    if (!data.every(function (item) {
+      return Number.isFinite(item.nilai) && item.nilai >= 0;
+    })) {
+      return;
+    }
+
+    var W = 640;
+    var H = 300;
+    var L = 42;
+    var R = 24;
+    var T = 36;
+    var B = 42;
+
+    var maks = Math.max.apply(
+      null,
+      data.map(function (item) {
+        return item.nilai;
+      }).concat([4])
+    );
+
+    var langkah = Math.max(1, Math.ceil(maks / 4));
+    var atas = langkah * 4;
+
+    var x = function (i) {
+      return L + ((W - L - R) * i) / (data.length - 1);
     };
-    r.addEventListener("mouseenter",show);
-    r.addEventListener("click",show);
-    r.addEventListener("mouseleave",()=>tip.classList.remove("on"));
-  });
-}
 
-function sampleWeek(){
-  const names=["Sen","Sel","Rab","Kam","Jum","Sab","Min"],v=[2,4,1,5,3,6,4];
-  return names.map((n,i)=>({label:n,value:v[i]}));
-}
+    var y = function (nilai) {
+      return T + (H - T - B) * (1 - nilai / atas);
+    };
 
-let previewOn=false;
-$("#preview").addEventListener("click",e=>{
-  previewOn=!previewOn;
-  e.currentTarget.textContent=previewOn?"Tutup contoh tampilan":"Lihat contoh tampilan";
-  renderChart(previewOn?sampleWeek():LUMO.activity);
-  toast(previewOn?"Ini hanya contoh tampilan, bukan datamu.":"Kembali ke data aslimu.");
-});
+    svg.replaceChildren();
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", "Grafik aktivitas belajar selama tujuh hari");
 
-const toastEl=$("#toast");let toastTimer;
-function toast(msg){
-  toastEl.textContent=msg;
-  toastEl.classList.add("on");
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>toastEl.classList.remove("on"),3200);
-}
+    var defs = buat("defs", {}, svg);
 
-document.querySelectorAll("[data-ripple]").forEach(b=>{
-  b.addEventListener("pointerdown",e=>{
-    const r=b.getBoundingClientRect(),s=Math.max(r.width,r.height),sp=document.createElement("span");
-    sp.className="ripple";
-    sp.style.width=sp.style.height=s+"px";
-    sp.style.left=(e.clientX-r.left-s/2)+"px";
-    sp.style.top=(e.clientY-r.top-s/2)+"px";
-    b.appendChild(sp);
-    setTimeout(()=>sp.remove(),700);
-  });
-});
+    var gradien = buat("linearGradient", {
+      id: "pu-isi",
+      x1: "0",
+      y1: "0",
+      x2: "0",
+      y2: "1"
+    }, defs);
 
-const io=new IntersectionObserver(es=>{
-  es.forEach(en=>{
-    if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target)}
-  });
-},{threshold:.12});
-document.querySelectorAll(".reveal").forEach((el,i)=>{
-  el.style.transitionDelay=(i*0.08)+"s";
-  io.observe(el);
-});
+    buat("stop", {
+      offset: "0%",
+      "stop-color": "#C85F1B",
+      "stop-opacity": "0.26"
+    }, gradien);
 
-if(!reduce&&matchMedia("(hover:hover)").matches){
-  document.querySelectorAll("[data-tilt]").forEach(c=>{
-    c.addEventListener("pointermove",e=>{
-      const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
-      c.style.transition="transform .1s linear,opacity .9s,box-shadow .3s";
-      c.style.transform="perspective(1100px) rotateX("+(-y*3)+"deg) rotateY("+(x*4)+"deg)";
+    buat("stop", {
+      offset: "100%",
+      "stop-color": "#C85F1B",
+      "stop-opacity": "0"
+    }, gradien);
+
+    for (var i = 0; i <= 4; i++) {
+      var nilaiSumbu = langkah * i;
+      var posisiY = y(nilaiSumbu);
+
+      buat("line", {
+        x1: L,
+        x2: W - R,
+        y1: posisiY,
+        y2: posisiY,
+        class: "pu-garis"
+      }, svg);
+
+      var labelSumbu = buat("text", {
+        x: L - 10,
+        y: posisiY + 4,
+        "text-anchor": "end",
+        class: "pu-sumbu"
+      }, svg);
+
+      labelSumbu.textContent = nilaiSumbu;
+    }
+
+    var titik = data.map(function (item, indeks) {
+      return [x(indeks), y(item.nilai)];
     });
-    c.addEventListener("pointerleave",()=>{
-      c.style.transition="transform .8s cubic-bezier(.22,1,.36,1),opacity .9s";
-      c.style.transform="";
-    });
-  });
-  const blobs=document.querySelectorAll(".blob");
-  addEventListener("pointermove",e=>{
-    const x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;
-    blobs.forEach(b=>{
-      const d=+b.dataset.depth;
-      b.style.transform="translate("+(x*d*2)+"px,"+(y*d*2)+"px)";
-    });
-  });
-}
 
-renderIdentity();
-renderStats();
-renderChart(LUMO.activity);
-if(LUMO.flash)toast(LUMO.flash);
+    var jalur = titik.map(function (posisi, indeks) {
+      return (indeks === 0 ? "M" : "L") +
+        posisi[0] + " " + posisi[1];
+    }).join(" ");
+
+    buat("path", {
+      d: jalur +
+        " L " + x(data.length - 1) + " " + y(0) +
+        " L " + x(0) + " " + y(0) + " Z",
+      fill: "url(#pu-isi)",
+      class: "pu-area"
+    }, svg);
+
+    buat("path", {
+      d: jalur,
+      pathLength: "1",
+      class: "pu-jalur"
+    }, svg);
+
+    data.forEach(function (item, indeks) {
+      var posisi = titik[indeks];
+      var terakhir = indeks === data.length - 1;
+      var tunda = (0.3 + indeks * 0.08) + "s";
+
+      var lingkaran = buat("circle", {
+        cx: posisi[0],
+        cy: posisi[1],
+        r: terakhir ? 7 : 5,
+        class: "pu-titik" + (terakhir ? " is-akhir" : "")
+      }, svg);
+
+      var labelNilai = buat("text", {
+        x: posisi[0],
+        y: posisi[1] - 13,
+        "text-anchor": "middle",
+        class: "pu-nilai"
+      }, svg);
+
+      var labelTanggal = buat("text", {
+        x: posisi[0],
+        y: H - 14,
+        "text-anchor": "middle",
+        class: "pu-tanggal"
+      }, svg);
+
+      labelNilai.textContent = item.nilai;
+      labelTanggal.textContent = item.label;
+
+      if (!reduce) {
+        lingkaran.style.animationDelay = tunda;
+        labelNilai.style.animationDelay = tunda;
+        labelTanggal.style.animationDelay =
+          (0.2 + indeks * 0.06) + "s";
+      }
+    });
+
+    svg.dataset.grafikDibuat = "true";
+
+    if (!reduce) {
+      requestAnimationFrame(function () {
+        svg.classList.add("is-hidup");
+      });
+    } else {
+      svg.classList.add("is-hidup");
+    }
+  }
+
+  function mulai() {
+    sapaan();
+    hitung();
+    grafik();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", mulai, { once: true });
+  } else {
+    mulai();
+  }
 })();

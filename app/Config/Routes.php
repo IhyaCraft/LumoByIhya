@@ -31,3 +31,7 @@ $routes->get('auth/reset-password', 'Auth::resetPassword');
 $routes->post('auth/reset-password', 'Auth::prosesResetPassword');
 
 $routes->get('profil', 'Profil::index');
+
+$routes->get('beranda-sudah-login', 'Home::berandaSudahLogin');
+
+$routes->get('pelajaran/matematika', 'ModulMatematika::index');

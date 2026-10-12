@@ -25,9 +25,21 @@ class Profil extends BaseController
                 ->with('error', 'Silakan masuk kembali ke akun kamu.');
         }
 
+      
         return view('profil/VProfilUtama', [
             'judul' => 'Profil Saya — Lumo',
             'user' => $user,
+            'nama' => $user['name'],
+            'email' => $user['email'],
+            'kelasSiswa' => null,
+            'pelajaranSelesai' => null,
+            'pencapaian' => null,
+            'aktivitas' => null,
+            'aktivitasTerbaru' => [],
+            'urlNotifikasi' => null,
+            'adaNotifikasi' => false,
+            'urlSemuaAktivitas' => null,
         ]);
+
     }
 }

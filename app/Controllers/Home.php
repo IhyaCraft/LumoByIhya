@@ -80,7 +80,7 @@ class Home extends BaseController
         'terakhir'   => $lanjut,
 
         'pelajaran' => [
-            ['b', '➗', 'Matematika', '12 pelajaran', site_url('pelajaran/matematika')],
+            ['b', '➗', 'Matematika', '4 pelajaran', site_url('pelajaran/matematika')],
             ['y', '🐘', 'Dunia Hewan', '8 pelajaran',  site_url('pelajaran/dunia-hewan')],
             ['g', '🌱', 'Tumbuhan',   '6 pelajaran',  site_url('pelajaran/tumbuhan')],
             ['p', '🔬', 'Sains',      '10 pelajaran', site_url('pelajaran/sains')],
@@ -103,4 +103,11 @@ class Home extends BaseController
 
     return view('menu/VHomeSudahLogin', $data);
 }
+
+public function berandaSudahLogin()
+{
+    return $this->dashboard();
+}
+
+
 }
