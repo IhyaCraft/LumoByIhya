@@ -80,15 +80,24 @@ class Auth extends BaseController
 
         session()->regenerate();
 
+        
         session()->set([
             'user_id' => $user['id'],
             'name' => $user['name'],
             'email' => $user['email'],
             'status' => $user['status'],
-            'isLoggedIn' => true
+            'role' => $user['role'],
+            'isLoggedIn' => true,
         ]);
 
+
+        
+        if ($user['role'] === 'admin') {
+            return redirect()->to(site_url('admin'));
+        }
+
         return redirect()->to(site_url('home'));
+
     }
 
     public function logout()

@@ -8,6 +8,9 @@ $routes->get('/', 'Home::index');
 $routes->get('masuk', 'Auth::login');
 $routes->post('masuk', 'Auth::proses_login');
 
+
+$routes->post('logout', 'Auth::logout');
+
  
 $routes->get('daftar', 'Auth::daftar');
 $routes->post('daftar', 'Auth::prosesDaftar');
@@ -35,3 +38,6 @@ $routes->get('profil', 'Profil::index');
 $routes->get('beranda-sudah-login', 'Home::berandaSudahLogin');
 
 $routes->get('pelajaran/matematika', 'ModulMatematika::index');
+
+
+$routes->get('admin', 'Admin::index', ['filter' => 'admin']);
