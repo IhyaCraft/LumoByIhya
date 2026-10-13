@@ -41,3 +41,13 @@ $routes->get('pelajaran/matematika', 'ModulMatematika::index');
 
 
 $routes->get('admin', 'Admin::index', ['filter' => 'admin']);
+
+$routes->group('admin/modul', ['filter' => 'admin'], static function ($routes) {
+    $routes->get('/', 'Admin\Modul::index');
+    $routes->get('tambah', 'Admin\Modul::tambah');
+    $routes->get('edit/(:num)', 'Admin\Modul::edit/$1');
+    $routes->post('arsipkan/(:num)', 'Admin\Modul::arsipkan/$1');
+    $routes->post('pulihkan/(:num)', 'Admin\Modul::pulihkan/$1');
+    $routes->post('tambah', 'Admin\Modul::prosesTambah');
+    $routes->post('edit/(:num)', 'Admin\Modul::prosesEdit/$1');
+});

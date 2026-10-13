@@ -38,20 +38,23 @@
                     </svg>
                     <span>Dashboard</span>
                 </a>
-                <a href="#pengelolaan" class="dashboard-admin-nav-item">
+
+                <a href="<?= site_url('admin/modul') ?>" class="dashboard-admin-nav-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5Z"/>
                         <path d="M4 17a2.5 2.5 0 0 1 2.5-2.5H20M8 7h7"/>
                     </svg>
                     <span>Modul Pembelajaran</span>
                 </a>
-                <a href="#pengelolaan" class="dashboard-admin-nav-item">
+
+                <a href="<?= site_url('admin/modul') ?>" class="dashboard-admin-nav-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/>
                         <path d="M14 3v5h5M8 12h8M8 16h8"/>
                     </svg>
                     <span>Materi</span>
                 </a>
+
                 <a href="#pengelolaan" class="dashboard-admin-nav-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <path d="M9 11 11 13 15.5 8.5"/>
@@ -60,6 +63,7 @@
                     </svg>
                     <span>Soal</span>
                 </a>
+
                 <a href="#pengelolaan" class="dashboard-admin-nav-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <circle cx="12" cy="12" r="9"/>
@@ -82,7 +86,7 @@
 
                 <div class="dashboard-admin-profile">
                     <div class="dashboard-admin-avatar">
-                        <?= esc(strtoupper(substr((string) session('name') ?: 'A', 0, 1))) ?>
+                        <?= esc(strtoupper(substr((string) (session('name') ?: 'A'), 0, 1))) ?>
                     </div>
                     <div class="dashboard-admin-profile-info">
                         <strong><?= esc(session('name') ?: 'Admin Lumo') ?></strong>
@@ -108,6 +112,7 @@
                         <path d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
                 </button>
+
                 <div class="dashboard-admin-breadcrumb">
                     <span>Lumo Education</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -115,13 +120,14 @@
                     </svg>
                     <strong>Dashboard</strong>
                 </div>
+
                 <div class="dashboard-admin-header-right">
                     <span class="dashboard-admin-status">
                         <span></span>
                         Panel Administrator
                     </span>
                     <div class="dashboard-admin-header-avatar">
-                        <?= esc(strtoupper(substr((string) session('name') ?: 'A', 0, 1))) ?>
+                        <?= esc(strtoupper(substr((string) (session('name') ?: 'A'), 0, 1))) ?>
                     </div>
                 </div>
             </header>
@@ -133,6 +139,7 @@
                         <h1>Selamat datang, <?= esc(session('name') ?: 'Admin') ?> <span>✦</span></h1>
                         <p>Kelola pengalaman belajar yang lebih bermakna bersama Lumo.</p>
                     </div>
+
                     <div class="dashboard-admin-welcome-art" aria-hidden="true">
                         <div class="dashboard-admin-art-orbit"></div>
                         <div class="dashboard-admin-art-book">
@@ -231,7 +238,7 @@
                     </div>
 
                     <div class="dashboard-admin-management-grid">
-                        <article class="dashboard-admin-management-card">
+                        <a href="<?= site_url('admin/modul') ?>" class="dashboard-admin-management-card">
                             <div class="dashboard-admin-management-icon dashboard-admin-stat-icon-orange">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                     <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5Z"/>
@@ -240,8 +247,8 @@
                             </div>
                             <h3>Modul Pembelajaran</h3>
                             <p>Atur kelompok dan struktur pelajaran untuk siswa.</p>
-                            <span class="dashboard-admin-coming-soon">Segera tersedia</span>
-                        </article>
+                            <span class="dashboard-admin-coming-soon">Kelola Modul →</span>
+                        </a>
 
                         <article class="dashboard-admin-management-card">
                             <div class="dashboard-admin-management-icon dashboard-admin-stat-icon-green">

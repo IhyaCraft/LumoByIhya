@@ -46,9 +46,8 @@ class CreateProgresPelajaran extends Migration
             ],
         ]);
 
-        $this->forge->addKey('id_progres', true);
-        $this->forge->addKey(['id', 'slug_pelajaran'], true);
-        $this->forge->addKey('id');
+        $this->forge->addKey('id', true);
+        $this->forge->addUniqueKey(['id_user', 'slug_pelajaran']);
 
         $this->forge->createTable('progres_pelajaran');
     }

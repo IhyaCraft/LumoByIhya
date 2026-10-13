@@ -1,0 +1,395 @@
+
+.modul-admin {
+    min-height: 100vh;
+    padding: 36px;
+    background: #F8F6F0;
+    color: #2B2B33;
+    font-family: Inter, sans-serif;
+}
+
+.modul-admin,
+.modul-admin * {
+    box-sizing: border-box;
+}
+
+.modul-admin a {
+    text-decoration: none;
+}
+
+.modul-admin-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.modul-admin-back {
+    display: inline-block;
+    margin-bottom: 18px;
+    color: #62626E;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.modul-admin-header h1 {
+    margin: 0;
+    font-family: Nunito, sans-serif;
+    font-size: clamp(26px, 3vw, 34px);
+    font-weight: 900;
+    letter-spacing: -0.7px;
+}
+
+.modul-admin-header p,
+.modul-admin-panel-header p {
+    margin: 8px 0 0;
+    color: #62626E;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.modul-admin-add {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 12px;
+    background: #C85F1B;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.modul-admin-add:hover {
+    background: #AA4D14;
+    transform: translateY(-1px);
+}
+
+.modul-admin-add span {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.modul-admin-panel {
+    overflow: hidden;
+    border: 1px solid #ECE8DC;
+    border-radius: 18px;
+    background: #FFFFFF;
+    box-shadow: 0 5px 20px rgba(43, 43, 51, 0.035);
+}
+
+.modul-admin-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 24px;
+    border-bottom: 1px solid #ECE8DC;
+}
+
+.modul-admin-panel-header h2 {
+    margin: 0;
+    font-family: Nunito, sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.modul-admin-count {
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: #FCE3CF;
+    color: #9B4715;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.modul-admin-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.modul-admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.modul-admin-table th {
+    padding: 15px 20px;
+    background: #FCFBF8;
+    color: #62626E;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.modul-admin-table td {
+    padding: 17px 20px;
+    border-top: 1px solid #F0EDE5;
+    color: #454550;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.modul-admin-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.modul-admin-table tbody tr:hover {
+    background: #FFFEFC;
+}
+
+.modul-admin-identity {
+    display: flex;
+    min-width: 220px;
+    align-items: center;
+    gap: 13px;
+}
+
+.modul-admin-thumbnail {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    place-items: center;
+    border: 1px solid #ECE8DC;
+    border-radius: 12px;
+    background: #F8F6F0;
+    object-fit: cover;
+}
+
+.modul-admin-thumbnail-empty {
+    font-size: 22px;
+}
+
+.modul-admin-info {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.modul-admin-name {
+    color: #2B2B33;
+    font-size: 13px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.modul-admin-description {
+    display: -webkit-box;
+    max-width: 280px;
+    overflow: hidden;
+    color: #777783;
+    font-size: 12px;
+    line-height: 1.5;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.modul-admin-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.modul-admin-status.is-active {
+    background: #E8F4E8;
+    color: #327442;
+}
+
+.modul-admin-status.is-archived {
+    background: #F0EEF0;
+    color: #66616B;
+}
+
+.modul-admin-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modul-admin-actions form {
+    margin: 0;
+}
+
+.modul-admin-action {
+    display: inline-flex;
+    min-height: 32px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.modul-admin-action-edit {
+    border-color: #F0D3BD;
+    background: #FFF7F0;
+    color: #A34B17;
+}
+
+.modul-admin-action-edit:hover {
+    background: #FCE3CF;
+}
+
+.modul-admin-action-archive {
+    background: #F3F1ED;
+    color: #625B52;
+}
+
+.modul-admin-action-archive:hover {
+    background: #E8E4DC;
+}
+
+.modul-admin-action-restore {
+    background: #E8F4E8;
+    color: #327442;
+}
+
+.modul-admin-action-restore:hover {
+    background: #D5EAD7;
+}
+
+.modul-admin-empty {
+    display: flex;
+    min-height: 310px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px 24px;
+    text-align: center;
+}
+
+.modul-admin-empty-icon {
+    display: grid;
+    width: 68px;
+    height: 68px;
+    margin-bottom: 16px;
+    place-items: center;
+    border-radius: 20px;
+    background: #FCE3CF;
+    font-size: 30px;
+}
+
+.modul-admin-empty h3 {
+    margin: 0;
+    font-family: Nunito, sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.modul-admin-empty p {
+    max-width: 400px;
+    margin: 10px 0 20px;
+    color: #62626E;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.modul-admin-alert {
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.modul-admin-alert-success {
+    border-color: #CDE5CF;
+    background: #F0F8F0;
+    color: #286638;
+}
+
+.modul-admin-alert-error {
+    border-color: #F0CFCB;
+    background: #FFF3F1;
+    color: #9E352B;
+}
+
+.modul-admin-footer {
+    padding: 24px 0 4px;
+    color: #898792;
+    font-size: 11px;
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    .modul-admin {
+        padding: 26px 20px;
+    }
+
+    .modul-admin-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .modul-admin-panel-header {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 560px) {
+    .modul-admin {
+        padding: 20px 12px;
+    }
+
+    .modul-admin-header {
+        gap: 18px;
+    }
+
+    .modul-admin-header p {
+        font-size: 13px;
+    }
+
+    .modul-admin-add {
+        width: 100%;
+    }
+
+    .modul-admin-panel-header {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 18px;
+    }
+
+    .modul-admin-table {
+        min-width: 760px;
+    }
+
+    .modul-admin-empty {
+        min-height: 280px;
+        padding: 30px 18px;
+    }
+
+    .modul-admin-empty .modul-admin-add {
+        width: auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .modul-admin *,
+    .modul-admin *::before,
+    .modul-admin *::after {
+        transition: none !important;
+    }
+}

@@ -57,9 +57,9 @@ class CreateUsers extends Migration
     }
 
     public function down()
-    {
-        if ($this->db->tableExists('users')) {
-            return;
-        }
+{
+    if ($this->db->tableExists('users')) {
+        $this->forge->dropTable('users');
     }
+}
 }
